@@ -1,0 +1,676 @@
+<!-- 
+
+TUTORIAL LINK: 
+https://www.youtube.com/playlist?list=PLvcTOvWWGdzYXC_dc1xlOTuokMdrAhozT
+
+
+█▀ █▀▀ ▀█▀ █░█ █▀█
+▄█ ██▄ ░█░ █▄█ █▀▀
+
+
+CREATE PROJECT
+
+	- composer create-project laravel/laravel example-app
+
+START PROGRAM
+	- php artisan serve
+
+MAINTENANCE MODE
+	UP
+		- php artisan up
+	DOWN
+		- php arisan down
+
+ROUTE LIST
+	- php artisan route:list
+
+
+█▀▄ ▄▀█ ▀█▀ ▄▀█ █▄▄ ▄▀█ █▀ █▀▀
+█▄▀ █▀█ ░█░ █▀█ █▄█ █▀█ ▄█ ██▄
+
+CONNECTION DATABASE
+
+	DB_CONNECTION=mysql
+	DB_HOST=127.0.0.1
+	DB_PORT=3306
+	DB_DATABASE=*name of database*
+	DB_USERNAME=root
+	DB_PASSWORD=
+
+DATABASE MIGRATION & MODEL
+
+@app/Providers/AppServiceProvider.php
+	- 
+
+			namespace App\Providers;
+		
+			use Illuminate\Support\ServiceProvider;
+			use Illuminate\Support\Facades\Schema;
+		
+		
+			class AppServiceProvider extends ServiceProvider
+			{
+			    /**
+			     * Register any application services.
+			     *
+			     * @return void
+			     */
+			    public function register()
+			    {
+			        //
+			    }
+		
+			    /**
+			     * Bootstrap any application services.
+			     *
+			     * @return void
+			     */
+			    public function boot()
+			    {
+			        Schema::defaultStringLength(191);
+			    }
+			}
+
+
+@database/migrations/filename.php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateArticlesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('articles', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('title');
+            $table->longText('content');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('articles');
+    }
+}
+
+
+
+░█████╗░░█████╗░██████╗░███████╗░██████╗
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝
+██║░░╚═╝██║░░██║██║░░██║█████╗░░╚█████╗░
+██║░░██╗██║░░██║██║░░██║██╔══╝░░░╚═══██╗
+╚█████╔╝╚█████╔╝██████╔╝███████╗██████╔╝
+░╚════╝░░╚════╝░╚═════╝░╚══════╝╚═════╝░ 
+
+!-->
+
+<?php 
+
+
+// █▀█ █▀█ █░█ ▀█▀ █▀▀ █▀
+// █▀▄ █▄█ █▄█ ░█░ ██▄ ▄█
+
+// ROUTES
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// BASIC ROUTES
+Route::get('admin/profile', function () {
+    // return 'Profile';
+    return view('welcome');
+});
+
+// ROUTES PARAMETER
+Route::get('greet/{name}', function ($name) {
+    return "Hello " . $name;
+});
+
+// NAMING OF ROUTES
+Route::get('greet/{name}', function ($name = "") {
+		return 'Hello ' . $name;
+})->name("greet name");
+
+// GROUP ROUTES
+Route::group(['prefix' => 'admin'], function(){
+	Route::get('dashboard', function(){
+		return 'dashboard';
+	});
+});
+
+// ROUTES WITH CONTROLLER
+Route::get('/contactus' , 'Pages_Controller@contactus');
+Route::get('/contact-us', 'Pages_Controller@view');
+
+// WITH() ARTILCES // name OF varialbe
+return view('/blog')->with('articles' , $articles);
+
+
+Route::resource('blog' , 'Pages_Controller');
+
+
+// █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░ █░░ █▀▀ █▀█
+// █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄ █▄▄ ██▄ █▀▄
+
+// CREATE A CONTROLLER VIA CMD
+// - php artisan make:controller *name of controller*
+// - php artisan make:controller Admin/Admin_Controller
+
+
+
+//CONTROLLERS WITH MODELS
+// -  php artisan make:controller Post_Controller --resource --model=post
+
+
+// █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█  
+// ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█  
+
+// ▄▀█ █▄░█ █▀▄
+// █▀█ █░▀█ █▄▀
+
+// █▄█ █ █▀▀ █░░ █▀▄ █▀
+// ░█░ █ ██▄ █▄▄ █▄▀ ▄█
+
+// TEMPLATES
+
+// master.blade.php
+<html>
+    <head>
+        <title>App Name - @yield('title')</title>
+    </head>
+    <body>
+        @section('navbar')
+           <p> This is the master navbar.</p>
+        @show
+
+        <div class="container">
+            @yield('content')
+        </div>
+    </body>
+</html>
+
+// contact_us.blade.php
+@extends('layouts.master')
+
+@section('title')
+Contact Us
+@endsection
+
+@section('content')
+<br>
+This is Content of Contact Us
+@endsection
+
+
+// █▀█ ▄▀█ █▀ █▀ █ █▄░█ █▀▀
+// █▀▀ █▀█ ▄█ ▄█ █ █░▀█ █▄█
+
+// █▀▄ ▄▀█ ▀█▀ ▄▀█  
+// █▄▀ █▀█ ░█░ █▀█  
+ 
+// ▀█▀ █▀█   █░█ █ █▀▀ █░█░█ █▀
+// ░█░ █▄█   ▀▄▀ █ ██▄ ▀▄▀▄▀ ▄█
+// PASSING DATA TO VIEWS
+
+// routes
+Route::get('/employees', function(){
+	$employee = array('name' => 'Girald Cute',
+				  	  'age' => '23',
+				   	  'dept' => 'IT Department');
+
+	return view('employee' , $employee);
+});
+
+
+// return view('employee' , $employee); 
+// OR
+// return view('employee')->with($employee); -> ARRAY 
+
+// IF SINGLE DATA
+// 		$name = 'GIRALD';
+//		return view('employee')->with('name' ,$name); -> ARRAY 
+
+
+// http://127.0.0.1:8000/employees
+// employee.blade.php 
+
+Name: {{$name}} <br>
+Age: {{$age}} <br>
+Department: {{$dept}}
+?>
+
+
+{{-- 
+// █▀▀ █▀█ █▄░█ █▀▄ █ ▀█▀ █ █▀█ █▄░█ ▄▀█ █░░  
+// █▄▄ █▄█ █░▀█ █▄▀ █ ░█░ █ █▄█ █░▀█ █▀█ █▄▄  
+
+// █▀ ▀█▀ ▄▀█ ▀█▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+// ▄█ ░█░ █▀█ ░█░ ██▄ █░▀░█ ██▄ █░▀█ ░█░
+// CONDITIONAL STATEMENT --}}
+
+{{-- IF STATEMENT --}}
+		{{-- open if --}}
+			@if($grade == 75)
+				<p>CLOSE ENOUGH!</p>
+			@elseif($grade > 75)
+				<p>YOU PASSED!</p>
+			@else
+				<p>YOU FAILED! MAG ARAL KA BOBO! {{$age}} kana mahiya ka!</p>
+			@endif 
+		{{-- closing --}}
+
+
+{{-- CASE STATEMENT --}}
+		{{-- open  --}}
+			 @switch($grade)
+				@case(90)
+				<p>Your grade is high enough!</p>
+				@case(75)
+				<p>Wow pasadu si kupal!</p>
+				@default
+				<p>Bobo bagsak ka</p>
+			@endswitch
+ 			
+		{{-- closing --}}
+
+
+{{-- FOR LOOP STATEMENT --}}
+ 		@for($i = 0 ; $i < 10 ; $i++)
+ 			Output: {{$i}} <br>
+ 		@endfor
+
+
+{{-- FOREACH STATEMENT --}}
+ 		@foreach($employees as $emp)
+ 			Name: {{$emp['name']}} <br>
+ 		@endforeach
+
+
+{{-- FORELSE STATEMENT --}}
+		@forelse($employees as $emp)
+			Name: {{$emp['name']}} <br>
+	
+		@empty
+			No Employess
+		@endforelse
+
+
+{{-- THE LOOP VARIABLE --}}
+		@foreach($employees as $emp)
+			@if($loop->first)
+				This is the first iteration <br>
+			@endif
+			@if($loop->last)
+				This is the last iteration  <br>
+			@endif
+			Names: {{$emp['name']}} <br>
+		@endforeach
+
+
+{{-- 
+SHORTCUT CONDITIONAL
+	$loop->index      	The index of the current loop iteration (Starts at 0).
+	$loop->iteration	The current loop iteration(Starts at 1).
+	$loop->remaining	The iteration remaining in the loop.
+	$loop->count		The total number of items in the array being iterated.
+	$loop->first		Whether this is the first iteration through the loop.
+	$loop->last   		Whether this is the last iteration through the loop.
+	$loop->depth		The nesting level of the current looop.
+	$loop->parent		When in a nested loop, The parent's loop variable.
+--}}
+
+
+{{-- 
+
+█░░ █ █▄░█ █▄▀   █▀▀ █▀ █▀  
+█▄▄ █ █░▀█ █░█   █▄▄ ▄█ ▄█  
+
+▄▀█ █▄░█ █▀▄   ░░█ ▄▀█ █░█ ▄▀█ █▀ █▀▀ █▀█ █ █▀█ ▀█▀
+█▀█ █░▀█ █▄▀   █▄█ █▀█ ▀▄▀ █▀█ ▄█ █▄▄ █▀▄ █ █▀▀ ░█░ 
+
+PATH:: public
+
+CODE: 	<link rel="stylesheet" type="text/css" href="{{asset('/css/bootstrap.min.css')}}">
+
+--}}
+
+
+$articles = Articles::paginate(2);
+ return view('/blog')->with('articles' , $articles);
+
+ > blade.php
+	 	{{$articles->links()}}
+
+REDIRECT WITH MESSAGES
+	return redirect('/blog')->with('message', 'Successfully Added!');
+
+
+DISPLAYING MESSAGE
+@if(session()->has('message'))
+    <div class="alert alert-success">
+        {{ session()->get('message') }}
+    </div>
+@endif
+
+
+FORM FORMAT
+<form action="/blog" method="POST">
+		@csrf
+		@method('PUT') // UPDATE
+		@method('DELETE') // DELETE DATA
+
+</form>
+
+
+
+{{-- 
+░█████╗░██████╗░██╗░░░██╗██████╗░
+██╔══██╗██╔══██╗██║░░░██║██╔══██╗
+██║░░╚═╝██████╔╝██║░░░██║██║░░██║
+██║░░██╗██╔══██╗██║░░░██║██║░░██║
+╚█████╔╝██║░░██║╚██████╔╝██████╔╝
+░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═════╝░
+			  CRUD 
+
+-----------------------------------
+Articles_Controller.php
+-----------------------------------
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+// MODEL & MIGRATION
+use App\Articles;
+
+class Articles_Controller extends Controller
+{
+    public function index(){
+    	$articles = Articles::paginate(5); // How many articles per row
+    	return view('blog')->with('articles' , $articles);
+    }
+
+    public function store(Request $request){
+    	$article = new Articles;
+    	$article->title = $request->input('txtTitle');
+    	$article->content = $request->input('txtContent');
+    	$article->save();
+
+    	return redirect('blog')->with('message', 'Successfully Added!');
+    }
+
+    public function create(){
+   		return view('add_articles_form');
+    }
+
+    public function show($id){
+    	$article = Articles::find($id);
+    	return view('show_article')->with('article' , $article);
+    }
+
+    public function edit($id){
+   		$article = Articles::find($id);
+    	return view('edit_article')->with('article' , $article);
+    }
+
+    public function update(Request $request, $id){
+    	$article = Articles::find($id);
+    	$article->title = $request->txtTitle;
+    	$article->content = $request->txtContent;
+    	$article->save(); 
+    	return redirect('/blog/'.$id)->with('message', 'Successfully Updated!');
+    }
+
+     public function destroy($id){
+   		Articles::destroy($id);
+    	return redirect('blog')->with('message-delete', 'Successfully Deleted!');
+    }
+}
+ --}}
+
+{{-- 
+
+█░█ ▄▀█ █░░ █ █▀▄ ▄▀█ ▀█▀ █ █▀█ █▄░█
+▀▄▀ █▀█ █▄▄ █ █▄▀ █▀█ ░█░ █ █▄█ █░▀█
+VALIDATION 
+
+$request->validate([
+    		'txtTitle' => 'bail|min:3|required|max:255',
+    		'txtCon tent' => 'required|min:3|max:233',
+    	]);
+
+    	Articles::create([
+    		"title" => $request->txtTitle,
+    		"content" => $request->txtContent
+    	]);
+
+    	return redirect('/blog')->with('message', 'Successfully Added!');
+
+
+DISPLAYING MESSAGE
+@if(session()->has('message'))
+    <div class="alert alert-success">
+        {{ session()->get('message') }}
+    </div>
+@endif
+--}}
+
+
+// █▀▄▀█ █▀█ █▀▄ █▀▀ █░░ █▀
+// █░▀░█ █▄█ █▄▀ ██▄ █▄▄ ▄█
+// CREATE A MODEL VIA CMD
+// -  php artisan make:model Articles -m
+
+
+{{--
+
+█▀ █▀▀ █▀▀ █▀▄ █▀▀ █▀█
+▄█ ██▄ ██▄ █▄▀ ██▄ █▀▄
+SEEDER
+
+COMMAND CMD/GITBASH
+
+	Create Seeder
+	- php artisan make::seeder *nameOfSeeder*
+	
+	Run Seeder
+		- php artisan db:seed
+
+============================================================================
+	ArticlesTableSeeder.php
+
+	<?php
+		use Illuminate\Database\Seeder;
+		use App\Articles;
+		class ArticlesTableSeeder extends Seeder
+		{
+		    /**
+		     * Run the database seeds.
+		     *
+		     * @return void
+		     */
+		    public function run()
+		    {
+		    	for ($i=0; $i < 10 ; $i++) {
+		    		Articles::create([
+		    			"title" => "This is header::".$i,
+		    			"content" => "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+		    			"short_desc" => "Lorem Ipsum is simply dummy text" . Str::random(40)
+		    		]); 
+		    	}
+		    }
+		}
+============================================================================
+--}}
+
+{{--
+
+█▀▀ ▄▀█ █▄▀ █▀▀ █▀█
+█▀░ █▀█ █░█ ██▄ █▀▄
+Faker
+	
+NEED MODEL W/ MIGRATIONS
+NEED TABLE SEEDER
+CREATE FAKER FACTORY DATA
+
+=========================================================================
+CustomerTableSeeder.php
+
+<?php
+
+use Illuminate\Database\Seeder;
+use App\Customer;
+
+class CustomerTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $faker = Faker\Factory::create();
+
+        for ($i=0; $i < 100 ; $i++) { 
+        	Customer::create([
+        		"name"=>$faker->name,
+        		"phone"=>$faker->phoneNumber,
+        		"address"=>$faker->address,
+        		"email"=>$faker->email
+        	]);
+        }
+    }
+}
+
+=========================================================================
+DatabaseSeeder.php
+
+<?php
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call(CustomerTablerSeeder::class);
+    }
+}
+
+=========================================================================
+
+
+█░█ ▀█▀ ▀█▀ █▀█   █▀█ █▀▀ █▀▄ █ █▀█ █▀▀ █▀▀ ▀█▀
+█▀█ ░█░ ░█░ █▀▀   █▀▄ ██▄ █▄▀ █ █▀▄ ██▄ █▄▄ ░█░
+HTTP REQUEST
+
+https://laravel.com/docs/8.x/redirects
+
+routes->Web.php
+
+Route::get('/' , 'RedirectSampleContoller@Index')->name('RedirectIndex');
+
+
+VIA ROUTE
+Route::get('/redirectme', function () { 
+    return redirect()->route("RedirectIndex");
+});
+
+
+VIA ACTION
+Route::get('/redirectme', function () { 
+    return redirect()->action("RedirectSampleContoller@showSomething");
+});
+
+Route::get('/showSomething' , 'RedirectSampleContoller@showSomething');
+
+=========================================================================
+
+
+
+
+█▀▄▀█ █ █▀▄ █▀▄ █░░ █▀▀ █░█░█ ▄▀█ █▀█ █▀▀
+█░▀░█ █ █▄▀ █▄▀ █▄▄ ██▄ ▀▄▀▄▀ █▀█ █▀▄ ██▄
+MIDDLE WARE
+
+To create a new middleware, use the make:middleware Artisan command:
+
+php artisan make:middleware EnsureTokenIsValid
+
+
+web.php
+----------------------------------------
+Route::get('/', function () { 
+    return view('welcome');
+})->middleware('down');
+
+
+Kernel.php
+----------------------------------------
+  protected $routeMiddleware = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        
+        'down' => \App\Http\Middleware\DownForMaintenance::class,
+    ];
+
+nameofmiddleware.php
+----------------------------------------
+
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class DownForMaintenance
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if (env("APP_ENV") == "local") {
+            return redirect('/maintenance');
+        }
+
+        return $next($request);
+    }
+}
+
+{{--
+	█░░ █▀█ █▀▀ █ █▄░█
+	█▄▄ █▄█ █▄█ █ █░▀█
+	LOGIN
+--}}
