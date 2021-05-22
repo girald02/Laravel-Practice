@@ -37,8 +37,8 @@ CONNECTION DATABASE
 	DB_USERNAME=root
 	DB_PASSWORD=
 
+=========================================================================
 DATABASE MIGRATION & MODEL
-
 @app/Providers/AppServiceProvider.php
 	- 
 
@@ -70,6 +70,10 @@ DATABASE MIGRATION & MODEL
 			        Schema::defaultStringLength(191);
 			    }
 			}
+
+=========================================================================
+COMMAND
+php artisan make:migration create_flights_table
 
 
 @database/migrations/filename.php
@@ -526,14 +530,18 @@ NEED MODEL W/ MIGRATIONS
 NEED TABLE SEEDER
 CREATE FAKER FACTORY DATA
 
+COMMAND:
+php artisan make:seeder CustomerTableSeeder
+
 =========================================================================
 CustomerTableSeeder.php
 
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Customer;
 
+use App\Customer;    <----------------------- MODEL
+ 
 class CustomerTableSeeder extends Seeder
 {
     /**
@@ -697,23 +705,6 @@ DECRYPTION
         // return decrypt("eyJpdiI6IlR2b2VnZmdETVVTYk03OXlSMU81N1E9PSIsInZhbHVlIjoicURwK05sYVFqbWFmMUdxUDFkZkJVSVJ6ZktIVi9WZzEwY3Qzc1V4M0ZIdz0iLCJtYWMiOiI4ODVlMTk4YWExMDIzMjM2ZGJkMGUzZGIxMjM2YjFiOWRjMmIwYThjZjc4MjA5ODU4MmFiM2Y5MGVlMTBiZWQ0In0=");
         return Crypt::decrypt("eyJpdiI6IlJsZmJKR1NvZEVrODQ1bE1GcG9PYWc9PSIsInZhbHVlIjoiTGt5U0pQUVlyRXozT0JoUitlN0dJQkFnMFplWDVKV0Q2Wm1ENkNqWUI5RT0iLCJtYWMiOiJkMzlhZTdmZDNkNDRhMTExZjE2YzgxZDIzYjY2MjU2NzY1MDE5ZTE1ZWVkMjhmYjgyNTBhYzljNDg0ZDQ5NmVhIn0=");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
