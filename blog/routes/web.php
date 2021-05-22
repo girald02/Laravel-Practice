@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/sample', 'Pages_Controller@index');
 
+Route::get('/encrypt', 'Pages_Controller@encryptval');
+Route::get('/decrypt', 'Pages_Controller@decryptval');
+
 Route::resource('blog' , 'Articles_Controller');
 
 // Route::get('/test{message}' , 'RedirectSampleContoller@showMessage')->name('RedirectIndex');
