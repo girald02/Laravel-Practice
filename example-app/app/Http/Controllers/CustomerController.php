@@ -6,6 +6,7 @@ use App\Customer;
 use DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
 class CustomerController extends Controller
 {
@@ -16,10 +17,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-         $customer = Customer::all();
-         return view('show_customer')->with('customers' , $customer);
-    }
+        $getAllCustomer = new Customer();
+        $results = $getAllCustomer->AllData();
 
+        return $results;
+        // return view('show_customer')->with('customers' , $results);
+        //return $customer;
+    }
     /**
      * Show the form for creating a new resource.
      *
