@@ -8,9 +8,21 @@ use DB;
 class Customer extends Model
 {
     public function AllData(){
+    	// ALL
+	 		$customer = DB::table('customers')->get();
+			return $customer;
 
-    	$customer = DB::table('customers')->where('name', 'Hanna Schaden IV')->first();
+    	// WHERE
+    		// $customer = DB::table('customers')->where('name' , 'Betty Medhurst')->get()->first();
+ 		
+ 		// ORDER BY
+    		// $customer = DB::table('customers')->orderBy('name' , 'asc')->get();
 
-		return $customer->name;
+    	// AGGREGATE 
+
+    		// return "qweqweds";
+
     }
 }
+
+

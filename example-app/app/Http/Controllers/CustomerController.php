@@ -17,12 +17,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $getAllCustomer = new Customer();
-        $results = $getAllCustomer->AllData();
+        $customers = new Customer();
+        $customers = $customers->AllData();
 
-        return $results;
-        // return view('show_customer')->with('customers' , $results);
-        //return $customer;
+        return view('show_customer')->with('customers',$customers);
     }
     /**
      * Show the form for creating a new resource.
