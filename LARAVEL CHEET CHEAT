@@ -384,7 +384,6 @@ FORM FORMAT
 </form>
 
 
-
 {{-- 
 ░█████╗░██████╗░██╗░░░██╗██████╗░
 ██╔══██╗██╔══██╗██║░░░██║██╔══██╗
@@ -773,15 +772,41 @@ class Customer extends Model
         
         // ORDER BY
             // $customer = DB::table('customers')->orderBy('name' , 'asc')->get();
-
-        // AGGREGATE 
-
-            // return "qweqweds";
-
     }
 }
 
+▄▀█ █▀▀ █▀▀ █▀█ █▀▀ █▀▀ ▄▀█ ▀█▀ █▀▀   █▀ █▀█ █░░
+█▀█ █▄█ █▄█ █▀▄ ██▄ █▄█ █▀█ ░█░ ██▄   ▄█ ▀▀█ █▄▄
 
-█░░ █▀█ █▀▀ █ █▄░█
-█▄▄ █▄█ █▄█ █ █░▀█
-LOGIN
+//Count 
+$customer = Customers::count();
+$customer = DB::table('customers')->count();
+return $customer;
+
+//MAX
+$max = Customers::max();
+$max = DB::table('customers')->max();
+return $max;
+
+//MIN
+$min = Customers::max("rating");
+$min = DB::table('customers')->max("rating");
+return $min;
+
+//SUM
+$sum = Customers::max("rating");
+$sum = DB::table('customers')->max("rating");
+return $sum;
+
+//AVG
+$avg = Customers::avg("rating");
+$avg = DB::table('customers')->avg("rating");
+return $avg;
+
+//EXISTs
+return Customer::where('name' , 'Stephen Bogan')->exists();
+
+//DOESNT EXIST
+return Customer::where('name' , 'asdsda Bogan')->doesntExist();
+
+
