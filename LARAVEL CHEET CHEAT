@@ -809,4 +809,10 @@ return Customer::where('name' , 'Stephen Bogan')->exists();
 //DOESNT EXIST
 return Customer::where('name' , 'asdsda Bogan')->doesntExist();
 
+//INNERJOIN
+  $customerOrder = DB::table('customers')
+                        ->join('orders' , 'customers.id' , '=' , 'orders.customer_id')
+                        ->select('customers.name' , 'orders.product' , 'orders.quantity')
+                        ->get();
+return $customerOrder;
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Orders;
+
 use DB;
 
 use Illuminate\Http\Request;
@@ -20,12 +22,12 @@ class CustomerController extends Controller
     {
         // $customers = new Customer();
         // $customers = $customers->AllData(); //CUSTOM MODEL DATA
-        // return view('show_customer')->with('customers',$customers);
+        $customerOrder = DB::table('customers')
+                        ->leftJoin('orders' , 'customers.id' , '=' , 'orders.customer_id')
+                        ->select('customers.name' , 'orders.product' , 'orders.quantity')
+                        ->get();
 
-        $customers = new Customer();
-        $customers = $customers->AllData(); //CUSTOM MODEL DATA
-        return $customers;
-
+        return $customerOrder;
     }
     /**
      * Show the form for creating a new resource.
